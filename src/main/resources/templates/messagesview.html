@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* Container Styling */
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 1200px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        /* Table Styling */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: Arial, sans-serif;
+        }
+    
+        th, td {
+            padding: 12px;
+            text-align: left;
+            vertical-align: middle;
+        }
+    
+        th {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+        }
+    
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    
+        tr:hover {
+            background-color: #e9ecef;
+        }
+    
+        .table-hover tbody tr:hover {
+            background-color: #d6e4f5; /* Light blue on hover */
+        }
+    
+        .text-center {
+            text-align: center;
+        }
+    
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin: 0 10px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Dashboard content */
+        .container {
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .card a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>Admin Dashboard</h1>
+        <ul>
+            <li><a href="/adminDashboard">Dashboard</a></li>
+            <li><a href="/courseadd">Add Courses</a></li>
+			<li><a href="/coursesview">Courses</a></li>
+			<li><a href="/addjob">Add job</a></li>
+            <li><a href="/viewjobs">Jobs</a></li>
+            <li><a href="/messagesview">Messages</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Dashboard content -->
+    <div class="container">
+        <h2>Welcome, Admin</h2>
+        <div>
+            <h3>Messages</h3>
+            <table id="messages-table" class="table table-bordered table-striped" style="width: 100%; margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Number</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Messages will be dynamically populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Fetch messages from the backend
+                const response = await fetch('/api/messages');
+    
+                if (response.ok) {
+                    const messages = await response.json();
+                    const tableBody = document.querySelector('#messages-table tbody');
+    
+                    if (messages.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="5">No messages available.</td></tr>';
+                    } else {
+                        // Populate the table rows with messages
+                        messages.forEach(message => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${message.id}</td>
+                                <td>${message.name}</td>
+                                <td>${message.email}</td>
+                                <td>${message.number}</td>
+                                <td>${message.msg}</td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    }
+                } else {
+                    console.error('Failed to fetch messages:', response.statusText);
+                    alert('Failed to load messages. Please try again later.');
+                }
+            } catch (error) {
+                console.error('Error fetching messages:', error);
+                alert('An error occurred while fetching messages.');
+            }
+        });
+    </script>
+</body>
+</html>

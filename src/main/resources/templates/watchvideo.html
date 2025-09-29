@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title th:text="${playlist != null ? playlist.title : 'Video Page'}">Video Page</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 20px;
+			background-color: #f4f4f9;
+		}
+
+		.container {
+			max-width: 1000px;
+			margin: 0 auto;
+			background-color: white;
+			border-radius: 10px;
+			padding: 30px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.video-title {
+			text-align: center;
+			color: #333;
+			margin-bottom: 30px;
+			font-size: 24px;
+		}
+
+		.video-container {
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		iframe {
+			width: 100%;
+			max-width: 800px;
+			height: 450px;
+			border: none;
+			border-radius: 8px;
+		}
+
+		.video-fallback {
+			text-align: center;
+			padding: 50px;
+			background-color: #f8f9fa;
+			border-radius: 8px;
+			margin-bottom: 20px;
+		}
+
+		.video-fallback a {
+			display: inline-block;
+			padding: 12px 24px;
+			background-color: #007bff;
+			color: white;
+			text-decoration: none;
+			border-radius: 5px;
+			margin-top: 15px;
+		}
+
+		.video-fallback a:hover {
+			background-color: #0056b3;
+		}
+
+		.back-button {
+			text-align: center;
+		}
+
+		.back-button button {
+			padding: 12px 24px;
+			font-size: 16px;
+			cursor: pointer;
+			background-color: #6c757d;
+			color: white;
+			border: none;
+			border-radius: 5px;
+		}
+
+		.back-button button:hover {
+			background-color: #545b62;
+		}
+
+		.error-message {
+			text-align: center;
+			color: #dc3545;
+			padding: 20px;
+			background-color: #f8d7da;
+			border-radius: 5px;
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div th:if="${error}" class="error-message">
+			<h3 th:text="${error}">Error occurred</h3>
+		</div>
+
+		<div th:unless="${error}">
+			<h1 class="video-title" th:text="${playlist != null ? playlist.title : 'Watch the Video'}">Watch the Video</h1>
+
+			<!-- YouTube Video Embed -->
+			<div th:if="${videoId != null and !videoId.isEmpty()}" class="video-container">
+				<iframe 
+					th:src="'https://www.youtube.com/embed/' + ${videoId}" 
+					title="YouTube video player" 
+					frameborder="0" 
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+					referrerpolicy="strict-origin-when-cross-origin"
+					allowfullscreen>
+				</iframe>
+			</div>
+
+			<!-- Fallback for non-YouTube videos or if embed fails -->
+			<div th:if="${videoId == null or videoId.isEmpty()}" class="video-fallback">
+				<h3>Video Link</h3>
+				<p>Click the link below to watch the video:</p>
+				<a th:href="${videoUrl}" target="_blank" th:text="'Open Video'">Open Video</a>
+			</div>
+		</div>
+
+		<div class="back-button">
+			<button onclick="history.back()">Back</button>
+		</div>
+	</div>
+
+</body>
+
+</html>

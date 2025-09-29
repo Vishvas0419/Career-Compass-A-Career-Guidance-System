@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Contact </title>
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/style/profile v2.css">
+
+</head>
+<body>
+   <header class="header">
+   
+      <section class="flex">
+   
+         <a href="/" class="logo">Career Guidance</a>
+   
+         <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <div id="user-btn" class="fas fa-user"></div>
+            <div id="toggle-btn" class="fas fa-sun"></div>
+         </div>
+   
+         <div class="profile">
+            <img 
+               src="/api/profile/profile-pic" 
+               class="image" 
+               alt="Profile Picture"
+               onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+            >
+            <h1 th:text="${name}"></h1>
+            <p class="role">User</p>
+            <a href="/dashboard" class="btn">View Profile</a>
+            <div class="flex-btn">
+               <a href="/logout" class="option-btn">Logout</a>
+            </div>
+         </div>
+   
+      </section>
+   
+   </header>   
+   
+   <div class="side-bar">
+   
+      <div id="close-btn">
+         <i class="fas fa-times"></i>
+      </div>
+   
+      <div class="profile">
+         <img 
+					src="/api/profile/profile-pic" 
+					class="image" 
+					alt="Profile Picture"
+					onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+				>
+         <h1 th:text="${name}"></h1>
+         <p class="role">User</p>
+         <a href="/dashboard" class="btn">view profile</a>
+      </div>
+   
+	  <nav class="navbar">
+	     <a href="/dashboard"><i class="fas fa-home"></i><span>Home</span></a>
+	     <a href="/skills"><i class="fas fa-graduation-cap"></i><span>Skill Gap Analysis</span></a>
+	     <a href="/courses"><i class="fas fa-graduation-cap"></i><span>Courses</span></a>
+	     <a href="/jobrecommendation"><i class="fas fa-graduation-cap"></i><span>Job Recommendation</span></a>
+	     <a href="/feedback"><i class="fas fa-headset"></i><span>Feedback</span></a>
+
+	   </nav>
+   
+   </div>
+
+   <section class="contact">
+      <div class="row">
+         <div class="image">
+            <img src="images/contact-img.svg" alt="">
+         </div>
+   
+         <form action="/api/messages" method="post" onsubmit="handleSubmit(event)">
+            <h3>Send your message</h3>
+            <input type="text" placeholder="Enter your name" name="name" required maxlength="50" class="box">
+            <input type="email" placeholder="Enter your email" name="email" required maxlength="50" class="box">
+            <input type="number" placeholder="Enter your number" name="number" required maxlength="50" class="box">
+            <textarea name="msg" class="box" placeholder="Enter your message" required maxlength="1000" cols="30" rows="10"></textarea>
+            <input type="submit" value="Send Message" class="inline-btn">
+         </form>
+      </div>
+   
+      <div class="box-container">
+         <div class="box">
+            <i class="fas fa-phone"></i>
+            <h3>Phone Number</h3>
+            <a href="tel:1234567890">+91 9494332007</a>
+         </div>
+         <div class="box">
+            <i class="fas fa-envelope"></i>
+            <h3>Email Address</h3>
+            <a href="mailto:CareerGuidance@gmail.com">CareerGuidance@gmail.com</a>
+         </div>
+         <div class="box">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Office Address</h3>
+            <a href="#">Vijayawada, AP</a>
+         </div>
+      </div>
+   </section>
+
+
+
+
+<footer class="footer">
+
+   &copy; copyright @ 2024 </span> | all rights reserved!
+
+</footer>
+
+<!-- custom js file link  -->
+<script src="/script/profile.js"></script>
+<script>
+   // Function to handle form submission
+   function handleSubmit(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      const form = event.target;
+
+      // Prepare form data for submission
+      const formData = new FormData(form);
+
+      // Convert form data to a JSON object
+      const data = {
+         name: formData.get('name'),
+         email: formData.get('email'),
+         number: formData.get('number'),
+         msg: formData.get('msg')
+      };
+
+      // Send the form data using fetch
+      fetch('/api/messages', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify(data)
+      })
+      .then(response => {
+         if (response.ok) {
+            alert('Message sent successfully!');
+            form.reset(); // Reset the form fields
+         } else {
+            alert('Failed to send message. Please try again later.');
+         }
+      })
+      .catch(error => {
+         console.error('Error:', error);
+         alert('An error occurred while sending the message.');
+      });
+   }
+</script>
+</body>
+</html>

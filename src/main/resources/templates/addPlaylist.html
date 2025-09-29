@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Course Form</title>
+
+   <!-- Bootstrap CDN link for styling -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   
+   <!-- Custom CSS file link (if any) -->
+   <link rel="stylesheet" href="/style/style.css">
+
+</head>
+<body>
+   <div class="container">
+      <h1 class="my-4">Course Details Form</h1>
+      <form action="/addtoplaylist" method="POST">
+         
+         <div class="form-group">
+            <label for="title">Video Title</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Enter course title" required>
+         </div>
+
+         <div class="form-group">
+            <label for="coverImage">Cover Image URL</label>
+            <input type="url" class="form-control" id="coverImage" name="coverImage" placeholder="Enter cover image URL" required>
+         </div>
+
+         <div class="form-group">
+            <label for="videoUrl">Video URL</label>
+            <input type="url" class="form-control" id="videoUrl" name="videoUrl" placeholder="Enter video URL" required>
+         </div>
+
+         <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+   </div>
+
+   <!-- Bootstrap JS, Popper.js and jQuery CDN links for Bootstrap functionality -->
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

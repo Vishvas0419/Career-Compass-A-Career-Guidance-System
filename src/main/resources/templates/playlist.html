@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Video Playlist</title>
+
+	<!-- Font Awesome CDN link  -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+	<!-- Custom CSS file link  -->
+	<link rel="stylesheet" href="/style/profile v2.css">
+
+</head>
+
+<body>
+
+	<header class="header">
+		<section class="flex">
+			<a href="/" class="logo">Carrier Guidance</a>
+			<div class="icons">
+				<div id="menu-btn" class="fas fa-bars"></div>
+				<div id="user-btn" class="fas fa-user"></div>
+				<div id="toggle-btn" class="fas fa-sun"></div>
+			</div>
+			<div class="profile">
+				<img 
+					src="/api/profile/profile-pic" 
+					class="image" 
+					alt="Profile Picture"
+					onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+				>
+				<h1 th:text="${name}"></h1>
+				<p class="role">Student</p>
+				<a href="/dashboard" class="btn">View Profile</a>
+				<div class="flex-btn">
+					<a href="/logout" class="option-btn">Logout</a>
+				</div>
+			</div>
+		</section>
+	</header>
+
+	<div class="side-bar">
+		<div id="close-btn">
+			<i class="fas fa-times"></i>
+		</div>
+		<div class="profile">
+			<img 
+				src="/api/profile/profile-pic" 
+				class="image" 
+				alt="Profile Picture"
+				onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+			>
+			<h1 th:text="${name}"></h1>
+			<p class="role">Student</p>
+			<a href="/dashboard" class="btn">View Profile</a>
+		</div>
+
+		<nav class="navbar">
+			<a href="/dashboard"><i class="fas fa-home"></i><span>Home</span></a>
+			<a href="/skills"><i class="fas fa-graduation-cap"></i><span>Skill Gap Analysis</span></a>
+			<a href="/courses"><i class="fas fa-graduation-cap"></i><span>Courses</span></a>
+			<a href="/jobrecommendation"><i class="fas fa-graduation-cap"></i><span>Job Recommendation</span></a>
+			<a href="/feedback"><i class="fas fa-headset"></i><span>Feedback</span></a>
+		</nav>
+	</div>
+
+	<section class="playlist-details">
+		<h1 class="heading">Playlist Details</h1>
+		<div class="row">
+			<div class="column">
+				<div class="thumb">
+					<img th:src="${course.coverImage}" alt="Course Thumbnail">
+					<span th:text="${playlistSize}"></span></span>
+				</div>
+			</div>
+
+			<div class="column">
+				<div class="tutor">
+					<img th:src="${course.coverImage}" alt="Trainer Image">
+					<div>
+						<h3 th:text="${course.name}">Trainer Name</h3>
+						<span th:text="${course.trainerDesignation}">Updated</span>
+					</div>
+				</div>
+
+				<div class="details">
+					<h3 th:text="${course.courseTitle}">Complete HTML Tutorial</h3>
+					<p th:text="${course.description}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum
+						minus reiciendis, error sunt veritatis exercitationem deserunt velit doloribus itaque voluptate.
+					</p>
+					<!-- Only show "Add Video" button if user is admin -->
+					<a th:if="${userType == 'admin'}" th:href="@{/addvideo/{id}(id=${course.id})}"
+						class="inline-btn">Add Video</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="playlist-videos">
+		<h1 class="heading">Playlist Videos</h1>
+		<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+			<div class="box-container" th:each="playlist : ${playlists}" style="width: 30%; margin: 10px;">
+				<a class="box" th:href="@{/watchvideo/{id}(id=${playlist.id})}">
+					<i class="fas fa-play"></i>
+					<img th:src="${playlist.coverImage}" alt="Video Thumbnail">
+					<h3 th:text="${playlist.title}">Complete HTML Tutorial (Part 01)</h3>
+				</a>
+				<a th:if="${userType == 'admin'}" th:href="@{/deleteplaylist/{id}(id=${playlist.id})}" 
+				   class="inline-btn add" style="background-color: red;">Delete</a>
+			</div>
+		</div>
+	</section>
+
+	<footer class="footer">
+		&copy; Copyright @ 2022 by <span>Mr. Web Designer</span> | All Rights Reserved!
+	</footer>
+
+	<!-- Custom JS file link  -->
+	<script src="/script/profile.js"></script>
+
+</body>
+
+</html>

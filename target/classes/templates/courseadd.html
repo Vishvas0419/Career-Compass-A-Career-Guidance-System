@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Course</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin: 0 10px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #0056b3;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, textarea, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        .skill-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skill-row input, .skill-row select {
+            width: calc(50% - 10px);
+        }
+
+        .skill-row button {
+            width: auto;
+        }
+
+        .add-skill-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .add-skill-btn:hover {
+            background-color: #45a049;
+        }
+
+        .remove-skill-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .remove-skill-btn:hover {
+            background-color: #da190b;
+        }
+
+        .submit-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Admin Dashboard</h1>
+        <ul>
+            <li><a href="/adminDashboard">Dashboard</a></li>
+            <li><a href="/courseadd">Add Courses</a></li>
+            <li><a href="/coursesview">Courses</a></li>
+            <li><a href="/addjob">Add Job</a></li>
+            <li><a href="/viewjobs">Jobs</a></li>
+            <li><a href="/messagesview">Messages</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+    <h1>Add Course</h1>
+    <form method="POST" id="add-course-form">
+        <label for="name">Trainer Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter trainer name" required>
+
+        <label for="imageUrl">Trainer Image URL</label>
+        <input type="url" id="imageUrl" name="imageUrl" placeholder="Enter trainer image URL" required>
+
+        <label for="coverImage">Course Cover Image URL</label>
+        <input type="url" id="coverImage" name="coverImage" placeholder="Enter course cover image URL" required>
+
+        <label for="trainerDesignation">Trainer Designation</label>
+        <input type="text" id="trainerDesignation" name="trainerDesignation" placeholder="Enter trainer's designation" required>
+
+        <label for="courseTitle">Course Title</label>
+        <input type="text" id="courseTitle" name="courseTitle" placeholder="Enter course title" required>
+
+        <label for="description">Course Description</label>
+        <textarea id="description" name="description" placeholder="Enter course description" rows="5" required></textarea>
+
+        <label>Skills acquired by student</label>
+        <div id="skills-container">
+            <div class="skill-row">
+                <input type="text" name="skills[0].skill" placeholder="Skill name" required>
+                <select name="skills[0].level" required>
+                    <option value="">Select level</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+                <button type="button" class="remove-skill-btn" onclick="removeSkill(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" class="add-skill-btn" onclick="addSkill()">Add Skill</button>
+
+        <button type="submit" class="submit-btn">Submit Course</button>
+    </form>
+
+    <script>
+        let skillIndex = 1;
+
+        function addSkill() {
+            const container = document.getElementById('skills-container');
+            const skillRow = document.createElement('div');
+            skillRow.className = 'skill-row';
+            skillRow.innerHTML = `
+                <input type="text" name="skills[${skillIndex}].skill" placeholder="Skill name" required>
+                <select name="skills[${skillIndex}].level" required>
+                    <option value="">Select level</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+                <button type="button" class="remove-skill-btn" onclick="removeSkill(this)">Remove</button>
+            `;
+            container.appendChild(skillRow);
+            skillIndex++;
+        }
+
+        function removeSkill(button) {
+            const skillRow = button.parentElement;
+            skillRow.remove();
+        }
+    </script>
+    <script>
+        document.getElementById('add-course-form').addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevent the default form submission
+    
+            // Serialize form data into a JSON object
+            const formData = new FormData(e.target);
+            const jsonData = {
+                name: formData.get('name'),
+                imageUrl: formData.get('imageUrl'),
+                coverImage: formData.get('coverImage'),
+                trainerDesignation: formData.get('trainerDesignation'),
+                courseTitle: formData.get('courseTitle'),
+                description: formData.get('description'),
+                skills: []
+            };
+    
+            // Serialize skills dynamically
+            document.querySelectorAll('#skills-container .skill-row').forEach((row, index) => {
+                const skillName = row.querySelector(`input[name="skills[${index}].skill"]`).value;
+                const skillLevel = row.querySelector(`select[name="skills[${index}].level"]`).value;
+                jsonData.skills.push({ skill: skillName, level: skillLevel });
+            });
+    
+            try {
+                const response = await fetch('/api/courses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(jsonData)
+                });
+    
+                if (response.ok) {
+                    alert('Course added successfully!');
+                    e.target.reset(); // Reset the form
+                } else {
+                    const error = await response.json();
+                    alert('Error: ' + error.message);
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('An error occurred while adding the course.');
+            }
+        });
+    </script>
+</body>
+</html>

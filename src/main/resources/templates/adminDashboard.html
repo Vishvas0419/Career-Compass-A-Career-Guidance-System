@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* Navbar styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin: 0 10px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Dashboard content */
+        .container {
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .card a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>Admin Dashboard</h1>
+        <ul>
+            <li><a href="/adminDashboard">Dashboard</a></li>
+            <li><a href="/courseadd">Add Courses</a></li>
+			<li><a href="/coursesview">Courses</a></li>
+			<li><a href="/addjob">Add job</a></li>
+            <li><a href="/viewjobs">Jobs</a></li>
+            <li><a href="/messagesview">Messages</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Dashboard content -->
+    <div class="container">
+        <h2>Welcome, Admin</h2>
+        <div class="card">
+            <h3>Add Courses</h3>
+            <p>Use the link below to add a new course to the system.</p>
+            <a href="/courseadd">Go to Add Courses</a>
+        </div>
+        <div class="card">
+            <h3>Manage Courses</h3>
+            <p>View and manage all existing courses in the system.</p>
+            <a href="/coursesview">Go to Manage Courses</a>
+        </div>
+        <div class="card">
+            <h3>Jobs</h3>
+            <p>Use the link below to add a new job to the system</p>
+            <a href="/addjob">Add Job</a>
+        </div>
+        <div class="card">
+            <h3>Jobs</h3>
+            <p>Use the link below to manage jobs to the system</p>
+            <a href="/viewjobs">Manage Jobs</a>
+        </div>
+        <div class="card">
+            <h3>Messages</h3>
+            <p>Use the link below to view new messages to the system</p>
+            <a href="/messagesview">View Messages</a>
+        </div>
+        <!-- <div class="card">
+            <h3>Playlist Management</h3>
+            <p>Edit and manage playlist videos across all courses</p>
+            <a href="/playlistmanagement">Manage Playlists</a>
+        </div> -->
+    </div>
+</body>
+</html>

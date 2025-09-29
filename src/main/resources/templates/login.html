@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/style/login.css">
+    <script type="module" src="/script/login.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container" id="container">
+    <!-- Sign-Up Section -->
+    <div class="form-container sign-up-container">
+        
+        <form onsubmit="registerUser(event)">
+			<h1>Create Account</h1>
+            <span>or use your email for registration</span>
+            <input type="text" placeholder="Name" />
+            <input type="email" placeholder="Email" />
+            <input type="password" placeholder="Password" />
+            <input type="password" placeholder="Re Enter Password" />
+            <input type="date" placeholder="Date of Birth" />
+            <button type="submit">Sign Up</button>
+            <p><span id="status"></span></p> <!-- Updated to target the correct element -->
+        </form>
+    </div>
+
+    <!-- Sign-In Section -->
+    <div class="form-container sign-in-container">
+        <form onsubmit="loginUser(event)">
+            <h1>Sign in</h1>
+            <input type="email" name="email" placeholder="Email" required />
+            <input type="password" name="password" placeholder="Password" required />
+            <a href="#">Forgot your password?</a>
+            <button type="submit">Sign In</button>
+			<p><span id="status-login"></span></p> <!-- Updated to target the correct element -->
+        </form>
+    </div>
+
+    <!-- Overlay Section -->
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1>Welcome Back!</h1>
+                <p>To keep connected with us please login with your personal info</p>
+                <button class="ghost" id="signIn">Sign In</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>Hello, Friend!</h1>
+                <p>Enter your personal details and start your journey with us</p>
+                <button class="ghost" id="signUp">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Function for Register User -->
+<script>
+    // Login function
+	async function loginUser(event) {
+	    event.preventDefault(); // Prevent the form from reloading the page
+
+	    // Get form data
+	    const email = document.querySelector('input[name="email"]').value.trim();
+	    const password = document.querySelector('input[name="password"]').value.trim();
+
+	    // Validate form data
+	    if (!email || !password) {
+	        alert("Please fill out both fields.");
+	        return;
+	    }
+
+	    // Construct payload
+	    const payload = {
+	        email: email,
+	        password: password
+	    };
+
+	    try {
+	        // Call the login API
+	        const response = await fetch('/login', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json',
+	            },
+	            body: JSON.stringify(payload),
+	        });
+
+	        // Parse the response
+	        const result = await response.json();
+
+	        if (response.ok) {
+	            // Check the response message for admin or general login
+	            if (result.message === "admin") {
+	                document.querySelector('#status-login').innerText = "Admin login successful!";
+	                setTimeout(() => {
+	                    window.location.href = "/adminDashboard"; // Redirect to admin dashboard
+	                }, 1000);
+	            } else {
+	                document.querySelector('#status-login').innerText = result.message || "Login successful!";
+	                setTimeout(() => {
+	                    window.location.href = "/dashboard"; // Redirect to user dashboard
+	                }, 1000);
+	            }
+	        } else {
+	            // Handle various response statuses
+	            if (response.status === 404) {
+	                document.querySelector('#status-login').innerText = result.message || "User not found.";
+	            } else if (response.status === 401) {
+	                document.querySelector('#status-login').innerText = result.message || "Invalid password.";
+	            } else {
+	                document.querySelector('#status-login').innerText = result.error || "Login failed. Please try again.";
+	            }
+	        }
+	    } catch (error) {
+	        // Catch and handle any unexpected errors
+	        console.error("Error logging in:", error);
+	        document.querySelector('#status-login').innerText = "An error occurred. Please try again later.";
+	    }
+	}
+
+
+    // Register function
+    async function registerUser(event) {
+        event.preventDefault(); // Prevent the form from reloading the page
+
+        // Get form data
+        const name = document.querySelector('input[placeholder="Name"]').value.trim();
+        const email = document.querySelector('input[placeholder="Email"]').value.trim();
+        const password = document.querySelector('input[placeholder="Password"]').value.trim();
+        const rePassword = document.querySelector('input[placeholder="Re Enter Password"]').value.trim();
+        const dateOfBirth = document.querySelector('input[type="date"]').value.trim();
+
+        // Validate form data
+        if (!name || !email || !password || !rePassword || !dateOfBirth) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        if (password !== rePassword) {
+            alert("Passwords do not match.");
+            return;
+        }
+
+        // Construct payload
+        const payload = {
+            name: name,
+            email: email,
+            password: password,
+            dob: dateOfBirth
+        };
+
+        try {
+            // Call the register API
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            // Handle the response
+            const result = await response.json(); // Parse JSON response
+
+            if (response.ok) {
+                // Success: Display success message
+                document.querySelector('#status').innerText = result.message || "Registration successful!";
+
+                // Wait for the message to be displayed and then reload the page
+                setTimeout(function() {
+                    window.location.reload(); // Correct method to reload the page
+                }, 1000); // 1000 milliseconds = 1 second
+            } else {
+                // Failure: Display error message
+                document.querySelector('#status').innerText = result.message || "Registration failed.";
+            }
+        } catch (error) {
+            console.error("Error registering user:", error);
+            alert("An error occurred. Please try again later.");
+        }
+    }
+</script>
+
+
+<!-- Footer -->
+<div class="footer"></div>
+</body>
+</html>

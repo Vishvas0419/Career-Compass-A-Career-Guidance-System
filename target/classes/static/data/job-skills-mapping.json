@@ -1,0 +1,154 @@
+{
+  "jobSkillsMapping": [
+    {
+      "jobTitle": "Full Stack Developer",
+      "requiredSkills": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "React.js",
+        "MongoDB",
+        "Node.js",
+        "Express.js",
+        "Git",
+        "RESTful APIs",
+        "SQL"
+      ]
+    },
+    {
+      "jobTitle": "Data Scientist",
+      "requiredSkills": [
+        "Python",
+        "R",
+        "Machine Learning",
+        "SQL",
+        "Tableau",
+        "TensorFlow",
+        "Statistics",
+        "Data Visualization",
+        "Pandas",
+        "Scikit-learn"
+      ]
+    },
+    {
+      "jobTitle": "DevOps Engineer",
+      "requiredSkills": [
+        "Docker",
+        "Kubernetes",
+        "Jenkins",
+        "AWS",
+        "Linux",
+        "Python",
+        "Git",
+        "Ansible",
+        "Terraform",
+        "CI/CD"
+      ]
+    },
+    {
+      "jobTitle": "Frontend Developer",
+      "requiredSkills": [
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "React.js",
+        "Vue.js",
+        "TypeScript",
+        "Webpack",
+        "SASS",
+        "Redux",
+        "Jest"
+      ]
+    },
+    {
+      "jobTitle": "Backend Developer",
+      "requiredSkills": [
+        "Java",
+        "Spring Boot",
+        "MySQL",
+        "MongoDB",
+        "Redis",
+        "RESTful APIs",
+        "Microservices",
+        "Docker",
+        "JUnit",
+        "Maven"
+      ]
+    },
+    {
+      "jobTitle": "Cloud Solutions Architect",
+      "requiredSkills": [
+        "AWS",
+        "Azure",
+        "Google Cloud",
+        "Terraform",
+        "Docker",
+        "Kubernetes",
+        "Python",
+        "Networking",
+        "Security",
+        "Microservices"
+      ]
+    },
+    {
+      "jobTitle": "UI/UX Designer",
+      "requiredSkills": [
+        "Figma",
+        "Adobe XD",
+        "Sketch",
+        "Wireframing",
+        "Prototyping",
+        "User Research",
+        "HTML/CSS",
+        "Design Systems",
+        "Typography",
+        "Interaction Design"
+      ]
+    },
+    {
+      "jobTitle": "Mobile App Developer",
+      "requiredSkills": [
+        "Kotlin",
+        "Swift",
+        "React Native",
+        "Flutter",
+        "Android SDK",
+        "iOS Development",
+        "RESTful APIs",
+        "Git",
+        "Firebase",
+        "App Store Deployment"
+      ]
+    },
+    {
+      "jobTitle": "Machine Learning Engineer",
+      "requiredSkills": [
+        "Python",
+        "TensorFlow",
+        "PyTorch",
+        "Scikit-learn",
+        "Deep Learning",
+        "NLP",
+        "Computer Vision",
+        "Data Preprocessing",
+        "AWS/GCP",
+        "Docker"
+      ]
+    },
+    {
+      "jobTitle":   "Cybersecurity Analyst",
+      "requiredSkills": [
+        "Network Security",
+        "Penetration Testing",
+        "Security Tools",
+        "Python",
+        "Linux",
+        "Cryptography",
+        "SIEM",
+        "Risk Assessment",
+        "Incident Response",
+        "Security Frameworks"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Dashboard</title>
+
+   <!-- font awesome cdn link  -->
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+   <!-- custom css file link  -->
+
+   <link rel="stylesheet" href="/style/profile v2.css">
+   <!-- Chart.js removed -->
+   <style>
+      .stats-container {
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: space-around;
+         margin-top: 15px;
+      }
+      .stat-item {
+         text-align: center;
+         padding: 10px;
+         flex: 1 0 20%;
+         min-width: 100px;
+      }
+      .stat-item i {
+         font-size: 24px;
+         color: #4CAF50;
+         margin-bottom: 5px;
+      }
+      .stat-item span {
+         display: block;
+         font-size: 24px;
+         font-weight: bold;
+         margin: 5px 0;
+      }
+      .stat-item p {
+         margin: 0;
+         font-size: 14px;
+         color: #666;
+      }
+      .stats-box {
+         background-color: #f9f9f9;
+      }
+      /* Skill Gap Analysis Styles */
+      .skill-gap-row {
+         width: 100%;
+         margin-bottom: 30px;
+         position: relative;
+      }
+
+      .skill-gap-row::before {
+         content: '';
+         position: absolute;
+         top: -10px;
+         left: 0;
+         right: 0;
+         height: 3px;
+         background: linear-gradient(to right, #4CAF50, #2196F3, #FF9800);
+         border-radius: 3px;
+      }
+
+      .skill-gap-box {
+         margin-top: 20px;
+         width: 100%;
+         background-color: #fff;
+         border-radius: 10px;
+         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+         padding: 25px;
+         border-top: 5px solid #4CAF50;
+         transition: all 0.3s ease;
+      }
+
+      .skill-gap-box:hover {
+         transform: translateY(-5px);
+         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .skill-gap-box .flex {
+         border-bottom: 1px solid #eee;
+         padding-bottom: 15px;
+         margin-bottom: 20px;
+      }
+
+      .skill-gap-box .flex i {
+         font-size: 24px;
+         color: #4CAF50;
+         margin-right: 15px;
+      }
+
+      .skill-gap-box .flex span {
+         font-size: 20px;
+         font-weight: bold;
+         color: #333;
+      }
+
+      .skill-gap-box .flex p {
+         margin-top: 5px;
+         color: #666;
+      }
+
+      .career-goal-section {
+         margin: 20px 0;
+         padding: 20px;
+         background-color: #f5f5f5;
+         border-radius: 10px;
+         border-left: 4px solid #2196F3;
+         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+         position: relative;
+         overflow: hidden;
+      }
+
+      .career-goal-section::after {
+         content: '';
+         position: absolute;
+         top: 0;
+         right: 0;
+         width: 150px;
+         height: 100%;
+         background: linear-gradient(135deg, transparent 0%, rgba(33, 150, 243, 0.1) 100%);
+         z-index: 1;
+      }
+
+      .career-goal-section h3 {
+         margin-top: 0;
+         margin-bottom: 15px;
+         color: #333;
+      }
+
+      #career-goal-display {
+         font-weight: bold;
+         color: #2196F3;
+      }
+
+      .edit-goal-btn {
+         background: none;
+         border: none;
+         color: #4CAF50;
+         cursor: pointer;
+         margin-left: 10px;
+         font-size: 16px;
+         padding: 5px;
+         border-radius: 3px;
+         transition: background-color 0.3s;
+      }
+
+      .edit-goal-btn:hover {
+         background-color: rgba(76, 175, 80, 0.1);
+      }
+
+      .career-goal-modal {
+         display: none;
+         position: fixed;
+         z-index: 1000;
+         left: 0;
+         top: 0;
+         width: 100%;
+         height: 100%;
+         background-color: rgba(0,0,0,0.5);
+      }
+
+      .career-goal-modal-content {
+         background-color: #fefefe;
+         margin: 15% auto;
+         padding: 20px;
+         border: none;
+         border-radius: 10px;
+         width: 400px;
+         max-width: 90%;
+         text-align: center;
+         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+
+      .career-goal-modal h3 {
+         color: #333;
+         margin-bottom: 20px;
+      }
+
+      .career-goal-modal select {
+         width: 100%;
+         padding: 10px;
+         margin: 10px 0;
+         border: 1px solid #ddd;
+         border-radius: 5px;
+         font-size: 16px;
+      }
+
+      .career-goal-modal button {
+         padding: 10px 20px;
+         margin: 10px 5px;
+         border: none;
+         border-radius: 5px;
+         cursor: pointer;
+         font-size: 14px;
+      }
+
+      .career-goal-modal .save-btn {
+         background-color: #4CAF50;
+         color: white;
+      }
+
+      .career-goal-modal .cancel-btn {
+         background-color: #f44336;
+         color: white;
+      }
+
+      .overall-progress {
+         display: flex;
+         align-items: center;
+         margin-top: 10px;
+      }
+
+      .progress-label {
+         width: 150px;
+         font-weight: bold;
+         color: #555;
+      }
+
+      .progress-bar-container {
+         display: flex;
+         align-items: center;
+         flex-grow: 1;
+      }
+
+      .progress-bar-outer {
+         height: 20px;
+         background-color: #e0e0e0;
+         border-radius: 10px;
+         flex-grow: 1;
+         margin-right: 15px;
+         overflow: hidden;
+         box-shadow: inset 0 2px 3px rgba(0,0,0,0.1);
+         position: relative;
+      }
+
+      .progress-bar-outer::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background: linear-gradient(to right, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 100%);
+         z-index: 2;
+      }
+
+      .progress-bar-inner {
+         height: 100%;
+         width: 0%;
+         background: linear-gradient(to right, #4CAF50, #8BC34A);
+         border-radius: 10px;
+         transition: width 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+         position: relative;
+      }
+
+      .progress-bar-inner::after {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background: linear-gradient(45deg,
+                     rgba(255,255,255,0.15) 25%,
+                     transparent 25%,
+                     transparent 50%,
+                     rgba(255,255,255,0.15) 50%,
+                     rgba(255,255,255,0.15) 75%,
+                     transparent 75%,
+                     transparent);
+         background-size: 20px 20px;
+         animation: move-stripes 2s linear infinite;
+         border-radius: 10px;
+      }
+
+      @keyframes move-stripes {
+         0% { background-position: 0 0; }
+         100% { background-position: 40px 0; }
+      }
+
+      .progress-text {
+         font-weight: bold;
+         color: #4CAF50;
+         width: 50px;
+         text-align: right;
+      }
+
+      .skill-gap-container {
+         margin: 25px 0;
+         padding: 20px;
+         background-color: #fff;
+         border-radius: 10px;
+         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .skill-gap-container h3 {
+         margin-top: 0;
+         margin-bottom: 20px;
+         color: #333;
+         font-size: 18px;
+         position: relative;
+         padding-left: 15px;
+      }
+
+      .skill-gap-container h3::before {
+         content: '';
+         position: absolute;
+         left: 0;
+         top: 0;
+         bottom: 0;
+         width: 4px;
+         background-color: #4CAF50;
+         border-radius: 4px;
+      }
+
+      .skill-gap-list {
+         display: flex;
+         flex-direction: column;
+         gap: 15px;
+      }
+
+      .skill-gap-item {
+         display: flex;
+         flex-direction: column;
+         padding: 12px 15px;
+         background-color: #f9f9f9;
+         border-radius: 8px;
+         margin-bottom: 12px;
+         transition: all 0.3s ease;
+         border-left: 3px solid transparent;
+      }
+
+      .skill-gap-item:hover {
+         background-color: #f5f5f5;
+         transform: translateX(5px);
+         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      }
+
+      .skill-gap-item:last-child {
+         margin-bottom: 0;
+      }
+
+      /* Color coding for skill levels */
+      .skill-gap-item.beginner {
+         border-left-color: #FFC107;
+      }
+
+      .skill-gap-item.intermediate {
+         border-left-color: #2196F3;
+      }
+
+      .skill-gap-item.advanced {
+         border-left-color: #4CAF50;
+      }
+
+      .skill-gap-item.missing {
+         border-left-color: #F44336;
+      }
+
+      .skill-header {
+         display: flex;
+         justify-content: space-between;
+         margin-bottom: 5px;
+      }
+
+      .skill-name {
+         font-weight: bold;
+         color: #333;
+      }
+
+      .skill-level {
+         color: #666;
+      }
+
+      .skill-progress-container {
+         display: flex;
+         align-items: center;
+      }
+
+      .skill-progress-bar {
+         height: 15px;
+         background-color: #e0e0e0;
+         border-radius: 7.5px;
+         flex-grow: 1;
+         margin-right: 10px;
+         overflow: hidden;
+         position: relative;
+      }
+
+      .skill-progress-fill {
+         height: 100%;
+         background-color: #4CAF50;
+         border-radius: 7.5px;
+         transition: width 1s ease-in-out;
+      }
+
+      .skill-progress-fill.beginner {
+         background-color: #FFC107; /* Yellow */
+      }
+
+      .skill-progress-fill.intermediate {
+         background-color: #2196F3; /* Blue */
+      }
+
+      .skill-progress-fill.advanced {
+         background-color: #4CAF50; /* Green */
+      }
+
+      .skill-progress-fill.missing {
+         background-color: #F44336; /* Red */
+         width: 100%;
+         opacity: 0.3;
+      }
+
+      .skill-progress-text {
+         font-weight: bold;
+         width: 40px;
+         text-align: right;
+      }
+
+      .skill-recommendations {
+         margin-top: 25px;
+         padding: 20px;
+         background-color: #fff8e1;
+         border-radius: 10px;
+         border-left: 4px solid #FF9800;
+         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+         position: relative;
+         overflow: hidden;
+      }
+
+      .skill-recommendations::before {
+         content: '\f0eb';
+         font-family: 'Font Awesome 5 Free';
+         font-weight: 900;
+         position: absolute;
+         right: -15px;
+         top: -15px;
+         font-size: 100px;
+         color: rgba(255, 152, 0, 0.05);
+         z-index: 0;
+      }
+
+      .skill-recommendations h3 {
+         margin-top: 0;
+         margin-bottom: 10px;
+         color: #333;
+      }
+
+      .skill-recommendations ul {
+         margin: 0;
+         padding-left: 20px;
+      }
+
+      .skill-recommendations li {
+         margin-bottom: 8px;
+      }
+
+      .skill-recommendations a {
+         color: #2196F3;
+         text-decoration: none;
+         font-weight: bold;
+      }
+
+      .skill-recommendations a:hover {
+         text-decoration: underline;
+      }
+
+      .loading-message {
+         text-align: center;
+         padding: 20px;
+         color: #666;
+         font-style: italic;
+      }
+
+      /* Ensure skill gap analysis section is properly displayed */
+      .skill-gap-container {
+         margin: 20px 0;
+      }
+
+      .skill-gap-list {
+         max-width: 100%;
+         overflow: visible;
+      }
+
+      /* Make sure skill items are visible and properly styled */
+      .skill-gap-item {
+         display: flex !important;
+         flex-direction: column !important;
+         visibility: visible !important;
+         opacity: 1 !important;
+      }
+
+      /* Ensure error messages are styled */
+      .error-message {
+         text-align: center;
+         padding: 20px;
+         color: #e74c3c;
+         font-style: italic;
+         background-color: #fdf2f2;
+         border: 1px solid #f5c6cb;
+         border-radius: 5px;
+      }
+
+      /* Box container and box styling */
+      .box-container {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+         gap: 2rem;
+         margin-top: 2rem;
+      }
+
+      .box {
+         background: var(--white);
+         border-radius: .5rem;
+         padding: 2rem;
+         text-align: center;
+         box-shadow: var(--box-shadow);
+         border: var(--border);
+      }
+
+      .box .flex {
+         display: flex;
+         align-items: center;
+         gap: 1rem;
+         margin-bottom: 1rem;
+         justify-content: center;
+      }
+
+      .box .flex i {
+         font-size: 2rem;
+         color: var(--main-color);
+      }
+
+      .box .flex span {
+         font-size: 2rem;
+         color: var(--black);
+         font-weight: 600;
+      }
+
+      .box ul {
+         list-style: none;
+         padding: 0;
+         margin: 1rem 0;
+         text-align: left;
+      }
+
+      .box ul li {
+         padding: 0.5rem 0;
+         border-bottom: 1px solid #eee;
+         color: var(--light-color);
+      }
+
+      .box ul li:last-child {
+         border-bottom: none;
+      }
+
+      /* Stats specific styling */
+      .stats-box .stats-container {
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: space-around;
+         gap: 1rem;
+         margin-top: 1rem;
+      }
+
+      .stats-box .stat-item {
+         text-align: center;
+         flex: 1;
+         min-width: 100px;
+      }
+
+      .stats-box .stat-item i {
+         font-size: 2rem;
+         color: var(--main-color);
+         margin-bottom: 0.5rem;
+      }
+
+      .stats-box .stat-item span {
+         display: block;
+         font-size: 2rem;
+         font-weight: bold;
+         margin: 0.5rem 0;
+         color: var(--black);
+      }
+
+      .stats-box .stat-item p {
+         margin: 0;
+         font-size: 1.4rem;
+         color: var(--light-color);
+      }
+
+      /* Course recommendation styling */
+      .skill-courses-btn {
+         background-color: #2196F3;
+         color: white;
+         border: none;
+         padding: 4px 8px;
+         border-radius: 4px;
+         font-size: 12px;
+         cursor: pointer;
+         margin-left: 10px;
+         transition: background-color 0.3s;
+      }
+
+      .skill-courses-btn:hover {
+         background-color: #1976D2;
+      }
+
+      .clickable-skill {
+         transition: color 0.2s ease, text-shadow 0.2s ease;
+      }
+
+      .clickable-skill:hover {
+         color: #007bff;
+         text-shadow: 0 1px 2px rgba(0, 123, 255, 0.2);
+         text-decoration: underline;
+      }
+
+      .courses-modal {
+         display: none;
+         position: fixed;
+         z-index: 1000;
+         left: 0;
+         top: 0;
+         width: 100%;
+         height: 100%;
+         background-color: rgba(0,0,0,0.5);
+      }
+
+      .courses-modal-content {
+         background-color: #fefefe;
+         margin: 5% auto;
+         padding: 20px;
+         border: none;
+         border-radius: 10px;
+         width: 80%;
+         max-width: 800px;
+         max-height: 80vh;
+         overflow-y: auto;
+         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+
+      .courses-modal h3 {
+         color: #333;
+         margin-bottom: 20px;
+         border-bottom: 2px solid #2196F3;
+         padding-bottom: 10px;
+      }
+
+      .course-item {
+         background-color: #f9f9f9;
+         border-radius: 8px;
+         padding: 15px;
+         margin-bottom: 15px;
+         border-left: 4px solid #2196F3;
+      }
+
+      .course-title {
+         font-weight: bold;
+         color: #333;
+         margin-bottom: 5px;
+      }
+
+      .course-trainer {
+         color: #666;
+         font-size: 14px;
+         margin-bottom: 8px;
+      }
+
+      .course-description {
+         color: #555;
+         margin-bottom: 10px;
+         line-height: 1.4;
+      }
+
+      .course-skills {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 5px;
+         margin-top: 10px;
+      }
+
+      .skill-tag {
+         background-color: #e3f2fd;
+         color: #1976d2;
+         padding: 3px 8px;
+         border-radius: 15px;
+         font-size: 12px;
+         border: 1px solid #bbdefb;
+      }
+
+      .no-courses-message {
+         text-align: center;
+         color: #666;
+         padding: 20px;
+         font-style: italic;
+      }
+
+      .close-modal-btn {
+         background-color: #f44336;
+         color: white;
+         border: none;
+         padding: 10px 20px;
+         border-radius: 5px;
+         cursor: pointer;
+         float: right;
+         margin-top: 10px;
+      }
+
+      .close-modal-btn:hover {
+         background-color: #d32f2f;
+      }
+   </style>
+</head>
+<body>
+
+<header class="header">
+
+   <section class="flex">
+
+      <a href="/" class="logo">Career Compass</a>
+
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+
+      <div class="profile">
+         <img
+            src="/api/profile/profile-pic"
+            class="image"
+            alt="Profile Picture"
+            onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+         >
+         <h1 th:text="${name}"></h1>
+         <p class="role">User</p>
+         <a href="/dashboard" class="btn">view profile</a>
+         <div class="flex-btn">
+            <a href="/logout" class="option-btn">logout</a>
+         </div>
+      </div>
+
+   </section>
+
+</header>
+
+<div class="side-bar">
+
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+
+   <div class="profile">
+      <img
+            src="/api/profile/profile-pic"
+            class="image"
+            alt="Profile Picture"
+            onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+      >
+      <h1 th:text="${name}"></h1>
+      <p class="role">User</p>
+      <a href="/dashboard" class="btn">view profile</a>
+   </div>
+
+   <nav class="navbar">
+      <a href="/dashboard"><i class="fas fa-home"></i><span>Home</span></a>
+      <a href="/skills" th:if="${session.userType == 'student'}"><i class="fas fa-graduation-cap"></i><span>Skill Gap Analysis</span></a>
+      <a href="/courses"><i class="fas fa-graduation-cap"></i><span>Courses</span></a>
+      <a href="/jobrecommendation"><i class="fas fa-graduation-cap"></i><span>Job Recommendation</span></a>
+      <a href="/roadmap"><i class="fas fa-route"></i><span>Career Roadmap</span></a>
+      <a href="/feedback" th:if="${session.userType == 'student'}"><i class="fas fa-headset"></i><span>Feedback</span></a>
+
+    </nav>
+
+</div>
+
+<section class="user-profile">
+
+   <h1 class="heading">Your Profile</h1>
+
+   <!-- Skill Gap Analysis - Full Width Row -->
+   <div class="skill-gap-row">
+      <div class="box skill-gap-box">
+         <div class="flex">
+            <i class="fas fa-chart-line"></i>
+            <div>
+               <span>Skill Gap Analysis</span>
+               <p>Your progress towards career readiness</p>
+            </div>
+         </div>
+
+         <div class="career-goal-section">
+            <h3>Career Goal: <span id="career-goal-display">Loading...</span> 
+               <button id="edit-career-goal-btn" class="edit-goal-btn" onclick="showCareerGoalModal()" title="Change Career Goal">
+                  <i class="fas fa-edit"></i>
+               </button>
+            </h3>
+            <div class="overall-progress">
+               <div class="progress-label">Overall Readiness:</div>
+               <div class="progress-bar-container">
+                  <div id="overall-progress-bar" class="progress-bar-outer">
+                     <div id="overall-progress-fill" class="progress-bar-inner"></div>
+                  </div>
+                  <div id="overall-progress-text" class="progress-text">0%</div>
+               </div>
+            </div>
+         </div>
+
+         <div class="skill-gap-container">
+            <h3>Required Skills Progress</h3>
+            <div id="skill-gap-list" class="skill-gap-list">
+               <!-- Skill gap bars will be added here dynamically -->
+               <div class="loading-message">Loading skill data...</div>
+            </div>
+         </div>
+
+         <div class="skill-recommendations">
+            <h3>Recommendations</h3>
+            <ul id="skill-recommendations-list">
+               <li>Visit the <a href="/courses">Courses</a> page to find learning resources for missing skills</li>
+               <li>Update your skills on the <a href="/skills">Skills</a> page as you learn new ones</li>
+            </ul>
+         </div>
+      </div>
+   </div>
+
+   <!-- User Profile and Other Information -->
+   <div class="info">
+
+      <div class="user">
+         <img
+            src="/api/profile/profile-pic"
+            class="image"
+            alt="Profile Picture"
+            onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+         >
+        <h1>Welcome, <span th:text="${name}"></span>!</h1>
+        <p>Email: <span th:text="${email}"></span></p>
+                  <a href="/update" class="inline-btn">update profile</a>
+      </div>
+   </div>
+</section>
+
+<!-- Career Goal Change Modal -->
+<div id="career-goal-modal" class="career-goal-modal">
+   <div class="career-goal-modal-content">
+      <h3>Change Your Career Goal</h3>
+      <select id="career-goal-select">
+         <option value="">Select your career goal</option>
+         <option value="Full Stack Developer">Full Stack Developer</option>
+         <option value="Data Scientist">Data Scientist</option>
+         <option value="DevOps Engineer">DevOps Engineer</option>
+         <option value="Frontend Developer">Frontend Developer</option>
+         <option value="Backend Developer">Backend Developer</option>
+         <option value="Cloud Solutions Architect">Cloud Solutions Architect</option>
+         <option value="UI/UX Designer">UI/UX Designer</option>
+         <option value="Mobile App Developer">Mobile App Developer</option>
+         <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+         <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+      </select>
+      <div>
+         <button class="save-btn" onclick="saveCareerGoal()">Save</button>
+         <button class="cancel-btn" onclick="hideCareerGoalModal()">Cancel</button>
+      </div>
+   </div>
+</div>
+
+<!-- Courses Modal -->
+<div id="courses-modal" class="courses-modal">
+   <div class="courses-modal-content">
+      <h3 id="courses-modal-title">Courses for Skill</h3>
+      <div id="courses-list">
+         <!-- Courses will be loaded here -->
+      </div>
+      <button class="close-modal-btn" onclick="hideCoursesModal()">Close</button>
+      <div style="clear: both;"></div>
+   </div>
+</div>
+      </div>
+
+
+      <div class="box-container">
+         <!-- Statistics Section -->
+         <div class="box stats-box">
+            <div class="flex">
+               <i class="fas fa-chart-line"></i>
+               <div>
+                  <span>Your Statistics</span>
+               </div>
+            </div>
+            <div class="stats-container">
+               <div class="stat-item">
+                  <i class="fas fa-book"></i>
+                  <span id="matched-courses-count">0</span>
+                  <p>Courses Matched</p>
+               </div>
+               <div class="stat-item">
+                  <i class="fas fa-briefcase"></i>
+                  <span id="matched-jobs-count">0</span>
+                  <p>Jobs Matched</p>
+               </div>
+               <div class="stat-item">
+                  <i class="fas fa-graduation-cap"></i>
+                  <span id="skills-count">0</span>
+                  <p>Skills</p>
+               </div>
+               <div class="stat-item">
+                  <i class="fas fa-chart-pie"></i>
+                  <span id="skill-completion">0%</span>
+                  <p>Career Readiness</p>
+               </div>
+            </div>
+         </div>
+
+         <div class="box">
+            <div class="flex">
+               <i class="fas fa-bookmark"></i>
+               <div>
+                  <span>Skills</span>
+               </div>
+
+            </div>
+            <ul id="skills-list" style="font-weight: bold;font-size: medium;float: right;">
+            </ul>
+         </div>
+
+
+         <div class="box">
+            <div class="flex">
+               <i class="fas fa-bookmark"></i>
+               <div>
+                  <span>Interests</span>
+               </div>
+
+            </div>
+            <ul id="interests" style="font-weight: bold;font-size: medium;float: right;">
+            </ul>
+         </div>
+
+
+         <div class="box">
+            <div class="flex">
+               <i class="fas fa-bookmark"></i>
+               <div>
+                  <span>Certifications</span>
+               </div>
+
+            </div>
+            <ul id="certifications" style="font-weight: bold;font-size: medium;float: right;">
+            </ul>
+         </div>
+         <div class="box">
+            <div class="flex">
+               <i class="fas fa-bookmark"></i>
+
+               <div>
+                  <span>Acheivements</span>
+               </div>
+
+            </div>
+            <ul id="achievements" style="font-weight: bold;font-size: medium;float: right;">
+            </ul>
+         </div>
+         <!-- Skill Gap Analysis moved to top section -->
+   </div>
+
+
+</section>
+
+
+<footer class="footer">
+
+   &copy; copyright @ 2025 by | All Rights Reserved!
+
+</footer>
+
+<!-- custom js file link  -->
+<script src="/script/profile.js"></script>
+<script>
+   // Test chart function removed
+
+   // Main function to load all data when the page loads
+   document.addEventListener('DOMContentLoaded', async function() {
+      console.log('DOM content loaded');
+
+      // Load all data
+      await loadSkills();
+      await loadInterests();
+      await loadCertifications();
+      await loadAchievements();
+      await loadStatistics();
+      await loadSkillGapAnalysis();
+   });
+
+   // Load user skills
+   async function loadSkills() {
+      try {
+         const response = await fetch('/api/profiles/skills');
+         if (response.ok) {
+            const skills = await response.json();
+            const skillsList = document.getElementById('skills-list');
+            skillsList.innerHTML = ''; // Clear existing content
+
+            skills.forEach(skill => {
+               const li = document.createElement('li');
+               li.textContent = skill; // Display skill and level
+               skillsList.appendChild(li);
+            });
+
+            // Update skills count in statistics
+            document.getElementById('skills-count').textContent = skills.length;
+         } else {
+            console.error('Failed to fetch skills', response.statusText);
+         }
+      } catch (error) {
+         console.error('Error:', error);
+      }
+   }
+
+   // Load user interests
+   async function loadInterests() {
+      try {
+         const response = await fetch('/api/profile/interests');
+         if (response.ok) {
+            const interests = await response.json();
+            const interestsList = document.getElementById('interests');
+            interestsList.innerHTML = ''; // Clear existing content
+
+            interests.forEach(interest => {
+               const li = document.createElement('li');
+               li.textContent = interest.trim(); // Trim to remove extra spaces
+               interestsList.appendChild(li);
+            });
+         } else {
+            console.error('Failed to fetch interests:', response.statusText);
+         }
+      } catch (error) {
+         console.error('Error fetching interests:', error);
+      }
+   }
+
+   // Load user certifications
+   async function loadCertifications() {
+      try {
+         const response = await fetch('/api/profile/certifications');
+         if (response.ok) {
+            const certifications = await response.json();
+            const certificationsList = document.getElementById('certifications');
+            certificationsList.innerHTML = ''; // Clear existing content
+
+            certifications.forEach(certification => {
+               const li = document.createElement('li');
+               li.textContent = certification.trim(); // Trim to remove extra spaces
+               certificationsList.appendChild(li);
+            });
+         } else {
+            console.error('Failed to fetch certifications:', response.statusText);
+         }
+      } catch (error) {
+         console.error('Error fetching certifications:', error);
+      }
+   }
+
+   // Load user achievements
+   async function loadAchievements() {
+      try {
+         const response = await fetch('/api/profile/achievements');
+         if (response.ok) {
+            const achievements = await response.json();
+            const achievementsList = document.getElementById('achievements');
+            achievementsList.innerHTML = ''; // Clear existing content
+
+            achievements.forEach(achievement => {
+               const li = document.createElement('li');
+               li.textContent = achievement.trim(); // Trim to remove extra spaces
+               achievementsList.appendChild(li);
+            });
+         } else {
+            console.error('Failed to fetch achievements:', response.statusText);
+         }
+      } catch (error) {
+         console.error('Error fetching achievements:', error);
+      }
+   }
+
+   // Load statistics
+   async function loadStatistics() {
+      try {
+         // Fetch matched courses count using the recommend-courses API
+         const coursesResponse = await fetch('/api/recommend-courses');
+         if (coursesResponse.ok) {
+            const courses = await coursesResponse.json();
+            document.getElementById('matched-courses-count').textContent = courses.length;
+         }
+
+         // Fetch matched jobs count using the matching-jobs API
+         const jobsResponse = await fetch('/api/matching-jobs');
+         if (jobsResponse.ok) {
+            const jobs = await jobsResponse.json();
+            document.getElementById('matched-jobs-count').textContent = jobs.length;
+         }
+
+         // Calculate career readiness based on skill levels
+         // Beginner: 5%, Intermediate: 8%, Advanced: 10%
+         try {
+            const skillsResponse = await fetch('/api/profiles/skills');
+            if (skillsResponse.ok) {
+               const skills = await skillsResponse.json();
+               if (skills.length > 0) {
+                  let totalReadiness = 0;
+
+                  skills.forEach(skillWithLevel => {
+                     // Parse the skill level from format "skill (level)"
+                     const levelMatch = skillWithLevel.match(/\(([^)]+)\)/);
+                     if (levelMatch && levelMatch[1]) {
+                        const level = levelMatch[1].trim();
+
+                        // Add readiness percentage based on skill level
+                        if (level === 'Beginner') {
+                           totalReadiness += 5;
+                        } else if (level === 'Intermediate') {
+                           totalReadiness += 8;
+                        } else if (level === 'Advanced') {
+                           totalReadiness += 10;
+                        }
+                     }
+                  });
+
+                  // Cap readiness at 100%
+                  const readinessPercentage = Math.min(totalReadiness, 100);
+                  document.getElementById('skill-completion').textContent = readinessPercentage + '%';
+               } else {
+                  document.getElementById('skill-completion').textContent = '0%';
+               }
+            }
+         } catch (error) {
+            console.error('Error calculating career readiness:', error);
+            document.getElementById('skill-completion').textContent = '0%';
+         }
+      } catch (error) {
+         console.error('Error fetching statistics:', error);
+      }
+   }
+
+   // Load skill gap analysis data
+   async function loadSkillGapAnalysis() {
+      try {
+         // Fetch user profile to get career goal
+         const profileResponse = await fetch('/api/profiles/user-profile');
+         if (!profileResponse.ok) {
+            console.error('Failed to fetch user profile');
+            document.getElementById('career-goal-display').textContent = 'Not specified';
+            return;
+         }
+
+         const userProfile = await profileResponse.json();
+         const careerGoal = userProfile.careerGoal || 'Not specified';
+         document.getElementById('career-goal-display').textContent = careerGoal;
+
+         // Fetch user skills
+         const skillsResponse = await fetch('/api/profiles/skills');
+         if (!skillsResponse.ok) {
+            console.error('Failed to fetch user skills');
+            return;
+         }
+
+         const skills = await skillsResponse.json();
+
+         // Parse user skills and levels
+         const userSkills = skills.map(skillWithLevel => {
+            const parts = skillWithLevel.split(' (');
+            const skillName = parts[0].trim().toLowerCase();
+            const level = parts.length > 1 ? parts[1].replace(')', '').trim() : 'Unknown';
+            return { skill: skillName, level };
+         });
+
+         // Fetch job skills mapping directly from the static JSON file
+         const jobSkillsResponse = await fetch('/data/job-skills-mapping.json');
+         let jobSkillsMapping;
+
+         if (!jobSkillsResponse.ok) {
+            console.error('Failed to fetch job skills mapping from static file');
+            document.getElementById('skill-gap-list').innerHTML =
+               '<div class="error-message">Failed to load job skills data. Please try again later.</div>';
+            return;
+         }
+
+         try {
+            const responseText = await jobSkillsResponse.text();
+            jobSkillsMapping = JSON.parse(responseText);
+            console.log('Successfully loaded job skills mapping from static file:', jobSkillsMapping);
+         } catch (error) {
+            console.error('Error parsing job skills mapping:', error);
+            document.getElementById('skill-gap-list').innerHTML =
+               '<div class="error-message">Failed to parse job skills data. Please try again later.</div>';
+            return;
+         }
+
+         // Find matching job for career goal
+         const normalizedCareerGoal = careerGoal.toLowerCase().trim();
+         let targetJob = jobSkillsMapping.jobSkillsMapping.find(job =>
+            job.jobTitle.toLowerCase().includes(normalizedCareerGoal) ||
+            normalizedCareerGoal.includes(job.jobTitle.toLowerCase())
+         );
+
+         // If no matching job found, use the first job from the JSON file
+         if (!targetJob) {
+            console.log('No exact match found for career goal:', careerGoal);
+
+            // Try to find a job with similar title
+            const similarJobs = jobSkillsMapping.jobSkillsMapping.filter(job => {
+               const jobTitle = job.jobTitle.toLowerCase();
+               return jobTitle.includes('developer') || jobTitle.includes('engineer') ||
+                      jobTitle.includes(normalizedCareerGoal) || normalizedCareerGoal.includes(jobTitle);
+            });
+
+            if (similarJobs.length > 0) {
+               console.log('Found similar jobs:', similarJobs.map(job => job.jobTitle));
+               targetJob = similarJobs[0];
+               console.log('Using similar job:', targetJob.jobTitle);
+            } else {
+               // If no similar job found, use the first job from the JSON file
+               console.log('No similar jobs found, using the first job from the JSON file');
+               targetJob = jobSkillsMapping.jobSkillsMapping[0]; // Full Stack Developer
+               console.log('Using default job:', targetJob.jobTitle);
+            }
+         }
+
+         // Get required skills and user's skill levels
+         const requiredSkills = targetJob.requiredSkills.map(skill => skill.toLowerCase());
+         const userSkillMap = {};
+         userSkills.forEach(skill => {
+            userSkillMap[skill.skill] = skill.level;
+         });
+
+         // Calculate skill levels and overall progress
+         const skillGapList = document.getElementById('skill-gap-list');
+         skillGapList.innerHTML = '';
+
+         let totalProgress = 0;
+         const skillProgressData = [];
+
+         requiredSkills.forEach(skill => {
+            const userLevel = userSkillMap[skill];
+            let progress = 0;
+            let levelClass = 'missing';
+
+            if (userLevel) {
+               if (userLevel === 'Beginner') {
+                  progress = 33;
+                  levelClass = 'beginner';
+                  totalProgress += 5; // 5% for beginner skills
+               } else if (userLevel === 'Intermediate') {
+                  progress = 66;
+                  levelClass = 'intermediate';
+                  totalProgress += 8; // 8% for intermediate skills
+               } else if (userLevel === 'Advanced') {
+                  progress = 100;
+                  levelClass = 'advanced';
+                  totalProgress += 10; // 10% for advanced skills
+               }
+            }
+
+            skillProgressData.push({ skill, userLevel, progress, levelClass });
+         });
+
+         // Sort skills: first show skills the user has, then missing skills
+         skillProgressData.sort((a, b) => {
+            if (a.userLevel && !b.userLevel) return -1;
+            if (!a.userLevel && b.userLevel) return 1;
+            if (a.userLevel && b.userLevel) {
+               // Sort by progress (highest first)
+               return b.progress - a.progress;
+            }
+            return a.skill.localeCompare(b.skill);
+         });
+
+         // Create skill gap items
+         skillProgressData.forEach(data => {
+            const skillItem = document.createElement('div');
+            skillItem.className = `skill-gap-item ${data.levelClass}`;
+
+            const skillHeader = document.createElement('div');
+            skillHeader.className = 'skill-header';
+
+            const skillName = document.createElement('div');
+            skillName.className = 'skill-name clickable-skill';
+            skillName.textContent = data.skill.charAt(0).toUpperCase() + data.skill.slice(1);
+            skillName.onclick = () => redirectToCoursesForSkill(data.skill);
+            skillName.style.cursor = 'pointer';
+            skillName.title = `Click to view courses for ${data.skill}`;
+
+            const skillLevel = document.createElement('div');
+            skillLevel.className = 'skill-level';
+            skillLevel.textContent = data.userLevel || 'Not acquired';
+
+            skillHeader.appendChild(skillName);
+            skillHeader.appendChild(skillLevel);
+
+            // Add course recommendation button for missing skills
+            if (!data.userLevel) {
+               const coursesBtn = document.createElement('button');
+               coursesBtn.className = 'skill-courses-btn';
+               coursesBtn.textContent = 'View Courses';
+               coursesBtn.onclick = () => showCoursesForSkill(data.skill);
+               skillHeader.appendChild(coursesBtn);
+            }
+
+            const progressContainer = document.createElement('div');
+            progressContainer.className = 'skill-progress-container';
+
+            const progressBar = document.createElement('div');
+            progressBar.className = 'skill-progress-bar';
+
+            const progressFill = document.createElement('div');
+            progressFill.className = `skill-progress-fill ${data.levelClass}`;
+            progressFill.style.width = '0%'; // Start at 0 for animation
+
+            const progressText = document.createElement('div');
+            progressText.className = 'skill-progress-text';
+            progressText.textContent = data.progress + '%';
+
+            progressBar.appendChild(progressFill);
+            progressContainer.appendChild(progressBar);
+            progressContainer.appendChild(progressText);
+
+            skillItem.appendChild(skillHeader);
+            skillItem.appendChild(progressContainer);
+
+            skillGapList.appendChild(skillItem);
+
+            // Animate progress bars
+            setTimeout(() => {
+               progressFill.style.width = data.progress + '%';
+            }, 100);
+         });
+
+         // Update overall progress
+         const overallProgress = Math.min(totalProgress, 100);
+         const overallProgressFill = document.getElementById('overall-progress-fill');
+         const overallProgressText = document.getElementById('overall-progress-text');
+
+         overallProgressText.textContent = overallProgress + '%';
+         setTimeout(() => {
+            overallProgressFill.style.width = overallProgress + '%';
+         }, 100);
+
+         // Update recommendations based on skill gaps
+         const recommendationsList = document.getElementById('skill-recommendations-list');
+         const missingSkills = skillProgressData.filter(data => !data.userLevel);
+
+         // Clear existing dynamic recommendations
+         const existingRecommendations = recommendationsList.querySelectorAll('li.dynamic-recommendation');
+         existingRecommendations.forEach(item => item.remove());
+
+         // Add job title information
+         const jobInfoItem = document.createElement('li');
+         jobInfoItem.className = 'dynamic-recommendation';
+         jobInfoItem.innerHTML = `Based on skills required for <strong>${targetJob.jobTitle}</strong>`;
+         recommendationsList.prepend(jobInfoItem);
+
+         if (missingSkills.length > 0) {
+            const missingSkillsText = missingSkills.map(data =>
+               data.skill.charAt(0).toUpperCase() + data.skill.slice(1)
+            ).join(', ');
+
+            const recommendationItem = document.createElement('li');
+            recommendationItem.className = 'dynamic-recommendation';
+            recommendationItem.innerHTML = `Focus on learning these missing skills: <strong>${missingSkillsText}</strong>`;
+            recommendationsList.prepend(recommendationItem);
+         } else {
+            const recommendationItem = document.createElement('li');
+            recommendationItem.className = 'dynamic-recommendation';
+            recommendationItem.innerHTML = '<strong>Great job!</strong> You have all the required skills for this job role. Consider advancing your skill levels further.';
+            recommendationsList.prepend(recommendationItem);
+         }
+
+      } catch (error) {
+         console.error('Error loading skill gap analysis:', error);
+         document.getElementById('skill-gap-list').innerHTML =
+            '<div class=\"error-message\">Failed to load skill gap analysis. Please try again later.</div>';
+      }
+   }
+
+   // Career Goal Modal Functions
+   function showCareerGoalModal() {
+      const modal = document.getElementById('career-goal-modal');
+      const select = document.getElementById('career-goal-select');
+      const currentGoal = document.getElementById('career-goal-display').textContent;
+      
+      // Set current career goal in select
+      if (currentGoal && currentGoal !== 'Loading...' && currentGoal !== 'Not specified') {
+         select.value = currentGoal;
+      }
+      
+      modal.style.display = 'block';
+   }
+
+   function hideCareerGoalModal() {
+      document.getElementById('career-goal-modal').style.display = 'none';
+   }
+
+   async function saveCareerGoal() {
+      const newCareerGoal = document.getElementById('career-goal-select').value;
+      
+      if (!newCareerGoal) {
+         alert('Please select a career goal');
+         return;
+      }
+      
+      try {
+         // Update career goal via API
+         const response = await fetch('/api/profiles/update-career-goal', {
+            method: 'PUT',
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ careerGoal: newCareerGoal })
+         });
+         
+         if (response.ok) {
+            // Update display
+            document.getElementById('career-goal-display').textContent = newCareerGoal;
+            hideCareerGoalModal();
+            
+            // Refresh skill progress with new career goal
+            await loadSkillGapAnalysis();
+            
+            alert('Career goal updated successfully! Your skill progress has been refreshed.');
+         } else {
+            alert('Failed to update career goal. Please try again.');
+         }
+      } catch (error) {
+         console.error('Error updating career goal:', error);
+         alert('An error occurred while updating your career goal.');
+      }
+   }
+
+   // Close modal when clicking outside of it
+   window.onclick = function(event) {
+      const careerModal = document.getElementById('career-goal-modal');
+      const coursesModal = document.getElementById('courses-modal');
+      
+      if (event.target === careerModal) {
+         hideCareerGoalModal();
+      }
+      if (event.target === coursesModal) {
+         hideCoursesModal();
+      }
+   }
+
+   // Redirect to courses page with skill filter
+   function redirectToCoursesForSkill(skillName) {
+      window.location.href = `/courses?skill=${encodeURIComponent(skillName)}`;
+   }
+
+   // Course recommendation functions
+   async function showCoursesForSkill(skillName) {
+      const modal = document.getElementById('courses-modal');
+      const title = document.getElementById('courses-modal-title');
+      const coursesList = document.getElementById('courses-list');
+      
+      title.textContent = `Courses for ${skillName.charAt(0).toUpperCase() + skillName.slice(1)}`;
+      coursesList.innerHTML = '<div class="loading-message">Loading courses...</div>';
+      
+      modal.style.display = 'block';
+      
+      try {
+         // Fetch courses that teach this skill
+         const response = await fetch(`/api/courses/by-skill?skill=${encodeURIComponent(skillName)}`);
+         
+         if (response.ok) {
+            const courses = await response.json();
+            displayCourses(courses, skillName);
+         } else {
+            coursesList.innerHTML = '<div class="no-courses-message">Failed to load courses. Please try again later.</div>';
+         }
+      } catch (error) {
+         console.error('Error fetching courses:', error);
+         coursesList.innerHTML = '<div class="no-courses-message">Error loading courses. Please check your connection.</div>';
+      }
+   }
+
+   function redirectToCoursesForSkill(skillName) {
+      // Redirect to courses page with skill filter parameter
+      window.location.href = `/courses?skill=${encodeURIComponent(skillName)}`;
+   }
+
+   function displayCourses(courses, skillName) {
+      const coursesList = document.getElementById('courses-list');
+      
+      if (courses.length === 0) {
+         coursesList.innerHTML = `<div class="no-courses-message">No courses found for "${skillName}". Try browsing all <a href="/courses?skill=${encodeURIComponent(skillName)}">courses</a> to find related content.</div>`;
+         return;
+      }
+      
+      coursesList.innerHTML = '';
+      
+      courses.forEach(course => {
+         const courseItem = document.createElement('div');
+         courseItem.className = 'course-item';
+         
+         courseItem.innerHTML = `
+            <div class="course-title">${course.courseTitle}</div>
+            <div class="course-trainer">by ${course.name} - ${course.trainerDesignation}</div>
+            <div class="course-description">${course.description}</div>
+            <div class="course-skills">
+               ${course.skills.map(skill => 
+                  `<span class="skill-tag ${skill.skill.toLowerCase() === skillName.toLowerCase() ? 'highlight' : ''}">${skill.skill} (${skill.level})</span>`
+               ).join('')}
+            </div>
+         `;
+         
+         coursesList.appendChild(courseItem);
+      });
+   }
+
+   function hideCoursesModal() {
+      document.getElementById('courses-modal').style.display = 'none';
+   }
+</script>
+</script>
+
+</body>
+</html>

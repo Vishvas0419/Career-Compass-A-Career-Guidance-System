@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Courses</title>
+
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="/style/profile v2.css">
+   <style>
+	/* Container for the course action buttons */
+	.button-container {
+	   display: flex;
+	   justify-content: center;
+	   margin-top: 15px;
+	}
+
+	/* Style for course action buttons */
+	.inline-btn {
+	   padding: 10px 20px;
+	   border-radius: 5px;
+	   text-align: center;
+	   text-decoration: none;
+	   font-size: 14px;
+	   background-color: #007bff;
+	   color: white;
+	   transition: background-color 0.3s ease;
+	}
+
+	.inline-btn:hover {
+	   background-color: #0056b3;
+	}
+
+	/* Skill selector styles */
+	.skill-selector {
+	   text-align: center;
+	   margin: 20px 0;
+	   padding: 20px;
+	   background: var(--white);
+	   border-radius: 10px;
+	   box-shadow: 0 5px 15px rgba(0,0,0,.1);
+	}
+
+	.skill-selector h2 {
+	   color: var(--black);
+	   margin-bottom: 20px;
+	   font-size: 2rem;
+	}
+
+	.skill-buttons {
+	   display: flex;
+	   flex-wrap: wrap;
+	   gap: 10px;
+	   justify-content: center;
+	   margin-bottom: 20px;
+	}
+
+	.skill-btn {
+	   padding: 10px 20px;
+	   background: var(--light-bg);
+	   color: var(--black);
+	   border: 2px solid var(--border);
+	   border-radius: 25px;
+	   cursor: pointer;
+	   transition: all 0.3s ease;
+	   text-decoration: none;
+	   font-size: 14px;
+	}
+
+	.skill-btn:hover, .skill-btn.active {
+	   background: var(--main-color);
+	   color: var(--white);
+	   border-color: var(--main-color);
+	}
+
+	.search-container {
+	   display: flex;
+	   justify-content: center;
+	   gap: 10px;
+	   margin-top: 20px;
+	}
+
+	.search-input {
+	   padding: 12px 20px;
+	   border: 2px solid var(--border);
+	   border-radius: 25px;
+	   font-size: 16px;
+	   width: 300px;
+	   outline: none;
+	}
+
+	.search-input:focus {
+	   border-color: var(--main-color);
+	}
+
+	.search-btn {
+	   padding: 12px 25px;
+	   background: var(--main-color);
+	   color: var(--white);
+	   border: none;
+	   border-radius: 25px;
+	   cursor: pointer;
+	   font-size: 16px;
+	   transition: all 0.3s ease;
+	}
+
+	.search-btn:hover {
+	   background: var(--black);
+	}
+
+	.loading {
+	   text-align: center;
+	   padding: 50px;
+	   font-size: 18px;
+	   color: var(--light-color);
+	}
+
+	.course-box {
+	   background: var(--white);
+	   border-radius: 12px;
+	   padding: 20px;
+	   margin: 15px;
+	   box-shadow: 0 5px 15px rgba(0,0,0,.1);
+	   transition: transform 0.3s ease;
+	   max-width: 350px;
+	   width: 100%;
+	   overflow: hidden;
+	}
+
+	.course-box:hover {
+	   transform: translateY(-5px);
+	   box-shadow: 0 8px 25px rgba(0,0,0,.15);
+	}
+
+	/* Course image styling */
+	.course-box .thumb {
+	   width: 100%;
+	   height: 200px;
+	   overflow: hidden;
+	   border-radius: 8px;
+	   margin-bottom: 15px;
+	   background: #f5f5f5;
+	}
+
+	.course-box .thumb img {
+	   width: 100%;
+	   height: 100%;
+	   object-fit: cover;
+	   border-radius: 8px;
+	   transition: transform 0.3s ease;
+	}
+
+	.course-box .thumb img:hover {
+	   transform: scale(1.05);
+	}
+
+	/* Instructor styling */
+	.course-box .tutor {
+	   display: flex;
+	   align-items: center;
+	   margin-bottom: 15px;
+	   padding-bottom: 10px;
+	   border-bottom: 1px solid #eee;
+	}
+
+	.course-box .tutor img {
+	   width: 50px;
+	   height: 50px;
+	   border-radius: 50%;
+	   object-fit: cover;
+	   margin-right: 12px;
+	   border: 2px solid var(--light-bg);
+	}
+
+	.course-box .tutor .info {
+	   text-align: left;
+	}
+
+	.course-box .tutor .info h3 {
+	   margin: 0;
+	   font-size: 16px;
+	   color: var(--black);
+	}
+
+	.course-box .tutor .info span {
+	   font-size: 12px;
+	   color: var(--light-color);
+	}
+
+	.course-box .title {
+	   font-size: 18px;
+	   color: var(--black);
+	   margin: 15px 0 10px 0;
+	   line-height: 1.4;
+	}
+
+	.course-box .description {
+	   color: var(--light-color);
+	   font-size: 14px;
+	   line-height: 1.5;
+	   margin-bottom: 15px;
+	}
+
+	.skills-display {
+	   margin: 15px 0;
+	   text-align: center;
+	}
+
+	.skill-tag {
+	   display: inline-block;
+	   background: var(--light-bg);
+	   color: var(--main-color);
+	   padding: 5px 10px;
+	   border-radius: 15px;
+	   font-size: 12px;
+	   margin: 2px;
+	   border: 1px solid var(--main-color);
+	}
+
+	/* Courses section styling */
+	.courses {
+	   padding: 50px 20px;
+	}
+
+	.courses .heading {
+	   text-align: center;
+	   margin-bottom: 30px;
+	   font-size: 2.5rem;
+	   color: var(--black);
+	}
+
+	.courses .box-container {
+	   display: grid;
+	   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+	   gap: 25px;
+	   max-width: 1200px;
+	   margin: 0 auto;
+	}
+
+	#message-container {
+	   text-align: center;
+	   margin: 20px 0;
+	}
+
+	#message-container p {
+	   color: var(--light-color);
+	   font-size: 16px;
+	}
+
+	.loading {
+	   text-align: center;
+	   padding: 50px;
+	   color: var(--light-color);
+	   font-size: 18px;
+	}
+
+   </style>
+
+</head>
+<body>
+   <header class="header">
+      <section class="flex">
+         <a href="/" class="logo">Career Compass</a>
+         <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <div id="user-btn" class="fas fa-user"></div>
+            <div id="toggle-btn" class="fas fa-sun"></div>
+         </div>
+         <div class="profile">
+            <img 
+               src="/api/profile/profile-pic" 
+               class="image" 
+               alt="Profile Picture"
+               onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+            >
+            <h1 th:text="${name}"></h1>
+            <p class="role">User</p>
+            <a href="/dashboard" class="btn">view profile</a>
+            <div class="flex-btn">
+               <a href="/logout" class="option-btn">logout</a>
+            </div>
+         </div>
+      </section>
+   </header>   
+
+   <div class="side-bar">
+      <div id="close-btn">
+         <i class="fas fa-times"></i>
+      </div>
+      <div class="profile">
+         <img 
+            src="/api/profile/profile-pic" 
+            class="image" 
+            alt="Profile Picture"
+            onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+         >
+         <h1 th:text="${name}"></h1>
+         <p class="role">User</p>
+         <a href="/dashboard" class="btn">View Profile</a>
+      </div>
+      <nav class="navbar">
+         <a href="/dashboard"><i class="fas fa-home"></i><span>Home</span></a>
+         <a href="/skills"><i class="fas fa-graduation-cap"></i><span>Skill Gap Analysis</span></a>
+         <a href="/courses"><i class="fas fa-graduation-cap"></i><span>Courses</span></a>
+         <a href="/jobrecommendation"><i class="fas fa-graduation-cap"></i><span>Job Recommendation</span></a>
+         <a href="/roadmap"><i class="fas fa-route"></i><span>Career Roadmap</span></a>
+         <a href="/feedback"><i class="fas fa-headset"></i><span>Feedback</span></a>
+      </nav>
+   </div>
+
+   <section class="user-profile">
+
+      <h1 class="heading">Your Profile</h1>
+   
+      <div class="info">
+   
+         <div class="user">
+            <img 
+               src="/api/profile/profile-pic" 
+               class="image" 
+               alt="Profile Picture"
+               onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+            >
+           <h1>Welcome, <span th:text="${name}"></span>!</h1>
+           <p>Email: <span th:text="${email}"></span></p>
+            <a href="/update" class="inline-btn">update profile</a>
+         </div>
+      </div>
+   </section>
+   
+   <!-- Skill Selector Section -->
+   <section class="skill-selector">
+      <h2>Find Courses by Skills</h2>
+      <p>Select a skill to find relevant courses that will help you develop your expertise</p>
+      
+      <div class="skill-buttons" id="skill-buttons">
+         <!-- Skill buttons will be dynamically populated -->
+      </div>
+      
+      <div class="search-container">
+         <input type="text" id="skill-search" class="search-input" placeholder="Search for a specific skill...">
+         <button onclick="searchCoursesBySkill()" class="search-btn">Search Courses</button>
+      </div>
+   </section>
+
+   <!-- Courses Section -->
+   <section class="courses">
+      <h1 class="heading" id="courses-heading">All Available Courses</h1>
+      <div id="message-container">
+          <center><p id="message"></p></center>
+      </div>
+      <div class="box-container" id="courses-container">
+          <!-- Courses will be dynamically populated here -->
+      </div>
+  </section>
+
+
+<footer class="footer">
+   &copy; Copyright @ 2025 | All Rights Reserved!
+</footer>
+
+<!-- custom js file link  -->
+<script src="/script/profile.js"></script>
+<script>
+   let allCourses = [];
+   let currentSkill = null;
+
+   // Function to get URL parameters
+   function getUrlParameter(name) {
+       name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+       const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+       const results = regex.exec(location.search);
+       return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+   }
+
+   document.addEventListener('DOMContentLoaded', async () => {
+       await loadPopularSkills();
+       await loadAllCourses();
+       
+       // Check if there's a skill parameter in URL
+       const skillParam = getUrlParameter('skill');
+       if (skillParam) {
+           document.getElementById('skill-search').value = skillParam;
+           document.getElementById('courses-heading').textContent = `Courses for ${skillParam}`;
+           await loadCoursesBySkill(skillParam);
+           // Scroll to courses section
+           document.getElementById('courses-container').scrollIntoView({ behavior: 'smooth' });
+       }
+   });
+
+   // Load popular skills for quick selection
+   async function loadPopularSkills() {
+       const popularSkills = [
+           'JavaScript', 'Python', 'Java', 'React', 'Node.js', 'HTML/CSS',
+           'SQL', 'Git', 'Docker', 'AWS', 'Machine Learning', 'Data Analysis',
+           'Project Management', 'Communication', 'Leadership', 'Problem Solving'
+       ];
+       
+       const skillButtonsContainer = document.getElementById('skill-buttons');
+       skillButtonsContainer.innerHTML = '';
+       
+       popularSkills.forEach(skill => {
+           const button = document.createElement('button');
+           button.className = 'skill-btn';
+           button.textContent = skill;
+           button.onclick = () => selectSkill(skill, button);
+           skillButtonsContainer.appendChild(button);
+       });
+   }
+
+   // Select a skill and filter courses
+   async function selectSkill(skill, buttonElement) {
+       // Update button states
+       document.querySelectorAll('.skill-btn').forEach(btn => btn.classList.remove('active'));
+       buttonElement.classList.add('active');
+       
+       currentSkill = skill;
+       document.getElementById('courses-heading').textContent = `Courses for ${skill}`;
+       document.getElementById('skill-search').value = skill;
+       
+       await loadCoursesBySkill(skill);
+   }
+
+   // Search courses by skill from input
+   async function searchCoursesBySkill() {
+       const skillInput = document.getElementById('skill-search');
+       const skill = skillInput.value.trim();
+       
+       if (skill) {
+           // Clear active skill buttons
+           document.querySelectorAll('.skill-btn').forEach(btn => btn.classList.remove('active'));
+           
+           currentSkill = skill;
+           document.getElementById('courses-heading').textContent = `Courses for ${skill}`;
+           await loadCoursesBySkill(skill);
+       }
+   }
+
+   // Load all courses
+   async function loadAllCourses() {
+       try {
+           const response = await fetch('/api/courses');
+           const container = document.getElementById('courses-container');
+           const messageContainer = document.getElementById('message');
+
+           if (response.ok) {
+               allCourses = await response.json();
+               displayCourses(allCourses);
+           } else {
+               messageContainer.textContent = "Failed to fetch courses. Please try again later.";
+           }
+       } catch (error) {
+           console.error('Error fetching courses:', error);
+           document.getElementById('message').textContent = "An error occurred while fetching courses.";
+       }
+   }
+
+   // Load courses by specific skill
+   async function loadCoursesBySkill(skill) {
+       try {
+           const container = document.getElementById('courses-container');
+           const messageContainer = document.getElementById('message');
+           
+           // Show loading state
+           container.innerHTML = '<div class="loading">Loading courses...</div>';
+           messageContainer.textContent = '';
+
+           const response = await fetch(`/api/courses/by-skill?skill=${encodeURIComponent(skill)}`);
+           
+           if (response.ok) {
+               const courses = await response.json();
+               displayCourses(courses, skill);
+           } else {
+               messageContainer.textContent = `Failed to fetch courses for ${skill}. Please try again later.`;
+               container.innerHTML = '';
+           }
+       } catch (error) {
+           console.error('Error fetching courses by skill:', error);
+           document.getElementById('message').textContent = "An error occurred while fetching courses.";
+           document.getElementById('courses-container').innerHTML = '';
+       }
+   }
+
+   // Display courses in the container
+   function displayCourses(courses, skillFilter = null) {
+       const container = document.getElementById('courses-container');
+       const messageContainer = document.getElementById('message');
+       
+       container.innerHTML = '';
+       messageContainer.textContent = '';
+
+       if (courses.length === 0) {
+           if (skillFilter) {
+               messageContainer.innerHTML = `
+                   <div style="text-align: center; padding: 20px;">
+                       <h3>No courses found for "${skillFilter}"</h3>
+                       <p>Try <a href="#" onclick="resetFilter(); return false;" style="color: #007bff; text-decoration: underline;">viewing all courses</a> or search for a different skill.</p>
+                   </div>
+               `;
+           } else {
+               messageContainer.textContent = "No courses available at the moment.";
+           }
+           return;
+       }
+
+       courses.forEach(course => {
+           const courseBox = document.createElement('div');
+           courseBox.className = 'course-box';
+
+           // Create skills display
+           let skillsHtml = '';
+           if (course.skills && course.skills.length > 0) {
+               skillsHtml = '<div class="skills-display">';
+               course.skills.forEach(skill => {
+                   skillsHtml += `<span class="skill-tag">${skill.skill}</span>`;
+               });
+               skillsHtml += '</div>';
+           }
+
+           courseBox.innerHTML = `
+               <div class="tutor">
+                   <img src="${course.imageUrl || '/images/default-instructor.png'}" alt="Instructor Image" 
+                        onerror="this.src='/images/default-instructor.png'">
+                   <div class="info">
+                       <h3>${course.name || 'Instructor'}</h3>
+                       <span>${course.trainerDesignation || 'Course Instructor'}</span>
+                   </div>
+               </div>
+               <div class="thumb">
+                   <img src="${course.coverImage || '/images/default-course.png'}" alt="Course Cover" 
+                        onerror="this.src='/images/default-course.png'">
+               </div>
+               <h3 class="title">${course.courseTitle}</h3>
+               <p class="description">${course.description || 'Learn valuable skills with this comprehensive course.'}</p>
+               ${skillsHtml}
+               <div class="button-container">
+                   <a href="/viewplaylist/${course.id}" class="inline-btn view-playlist">View Course</a>
+               </div>
+           `;
+           container.appendChild(courseBox);
+       });
+   }
+
+   // Reset filter to show all courses
+   function resetFilter() {
+       document.getElementById('skill-search').value = '';
+       document.getElementById('courses-heading').textContent = 'Available Courses';
+       document.querySelectorAll('.skill-btn').forEach(btn => btn.classList.remove('active'));
+       currentSkill = null;
+       displayCourses(allCourses);
+       // Update URL to remove skill parameter
+       const url = new URL(window.location);
+       url.searchParams.delete('skill');
+       window.history.replaceState({}, '', url);
+   }
+
+   // Allow Enter key to search
+   document.getElementById('skill-search').addEventListener('keypress', function(e) {
+       if (e.key === 'Enter') {
+           searchCoursesBySkill();
+       }
+   });
+</script>
+</body>
+</html>

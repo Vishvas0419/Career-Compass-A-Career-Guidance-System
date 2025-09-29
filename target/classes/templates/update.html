@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Profile</title>
+
+   <!-- font awesome cdn link -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+
+   <!-- custom css file link -->
+   <link rel="stylesheet" href="/style/profile v2.css">
+</head>
+<body>
+
+<header class="header">
+   <section class="flex">
+      <a href="/" class="logo">Career Guidance</a>
+      <div class="icons">
+         <div id="menu-btn" class="fas fa-bars"></div>
+         <div id="user-btn" class="fas fa-user"></div>
+         <div id="toggle-btn" class="fas fa-sun"></div>
+      </div>
+      <div class="profile">
+         <img 
+            src="/api/profile/profile-pic" 
+            class="image" 
+            alt="Profile Picture"
+            onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+         >
+         <h1><span th:text="${profile.name}"></span></h1>
+         <p class="role">User</p>
+         <a href="/dashboard" class="btn">View Profile</a>
+         <div class="flex-btn">
+            <a href="/logout" class="option-btn">Logout</a>
+         </div>
+      </div>
+   </section>
+</header>   
+
+<div class="side-bar">
+   <div id="close-btn">
+      <i class="fas fa-times"></i>
+   </div>
+   <div class="profile">
+      <img 
+            src="/api/profile/profile-pic" 
+            class="image" 
+            alt="Profile Picture"
+            onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+      >
+      <h1><span th:text="${profile.name}"></span></h1>
+      <p class="role">User</p>
+      <a href="dashboard.html" class="btn">View Profile</a>
+   </div>
+   <nav class="navbar">
+      <a href="/dashboard"><i class="fas fa-home"></i><span>Home</span></a>
+      <a href="/skills"><i class="fas fa-graduation-cap"></i><span>Skill Gap Analysis</span></a>
+      <a href="/courses"><i class="fas fa-graduation-cap"></i><span>Courses</span></a>
+      <a href="/jobrecommendation"><i class="fas fa-briefcase"></i><span>Job Recommendation</span></a>
+      <a href="/feedback"><i class="fas fa-headset"></i><span>Feedback</span></a>
+   </nav>
+</div>
+
+<section class="user-profile">
+   <h1 class="heading">Update Profile</h1>
+   <div class="info">
+      <div class="user">
+         <img 
+            src="/api/profile/profile-pic" 
+            class="image" 
+            alt="Profile Picture"
+            onerror="this.onerror=null; this.src='/images/Screenshot%202024-11-21%20144815.png';"
+         >
+         <h1>Welcome, <span th:text="${profile.name}"></span>!</h1>
+         <p>Email: <span th:text="${profile.email}"></span></p>
+         <a href="/update" class="inline-btn">Update Profile</a>
+      </div>
+   </div>
+</section>
+
+<section class="form-container">
+   <form action="/api/profile/update" method="post" enctype="multipart/form-data">
+      <h3>Update Profile</h3>
+
+      <p>Update Pic</p>
+      <input type="file" accept="image/*" class="box" name="profilePic">
+
+      <p>Update Name</p>
+      <input 
+         type="text" 
+         name="name" 
+         placeholder="Enter name" 
+         maxlength="50" 
+         class="box" 
+         th:value="${profile.name}">
+
+         <input 
+         type="text" 
+         name="role" 
+         placeholder="Enter role" 
+         maxlength="50" 
+         class="box" 
+         th:value="${profile.role}">
+      
+      <p>Update Email</p>
+      <input 
+         type="email" 
+         name="email" 
+         placeholder="Enter email" 
+         maxlength="50" 
+         class="box" 
+         th:value="${profile.email}" readonly>
+
+      <p>Interests</p>
+      <input 
+         type="text" 
+         name="interests" 
+         placeholder="Enter your interests" 
+         class="box" 
+         th:value="${profile.interests}">
+
+      <p>Certification</p>
+      <input 
+         type="text" 
+         name="certification" 
+         placeholder="Enter your Certification" 
+         class="box" 
+         th:value="${profile.certification}">
+
+      <p>Career Goal</p>
+      <select name="careerGoal" class="box">
+         <option value="">Select your career goal</option>
+         <option value="Full Stack Developer" th:selected="${profile.careerGoal == 'Full Stack Developer'}">Full Stack Developer</option>
+         <option value="Data Scientist" th:selected="${profile.careerGoal == 'Data Scientist'}">Data Scientist</option>
+         <option value="DevOps Engineer" th:selected="${profile.careerGoal == 'DevOps Engineer'}">DevOps Engineer</option>
+         <option value="Frontend Developer" th:selected="${profile.careerGoal == 'Frontend Developer'}">Frontend Developer</option>
+         <option value="Backend Developer" th:selected="${profile.careerGoal == 'Backend Developer'}">Backend Developer</option>
+         <option value="Cloud Solutions Architect" th:selected="${profile.careerGoal == 'Cloud Solutions Architect'}">Cloud Solutions Architect</option>
+         <option value="UI/UX Designer" th:selected="${profile.careerGoal == 'UI/UX Designer'}">UI/UX Designer</option>
+         <option value="Mobile App Developer" th:selected="${profile.careerGoal == 'Mobile App Developer'}">Mobile App Developer</option>
+         <option value="Machine Learning Engineer" th:selected="${profile.careerGoal == 'Machine Learning Engineer'}">Machine Learning Engineer</option>
+         <option value="Cybersecurity Analyst" th:selected="${profile.careerGoal == 'Cybersecurity Analyst'}">Cybersecurity Analyst</option>
+      </select>
+
+      <p>Achievements</p>
+      <input 
+         type="text" 
+         name="achievements" 
+         placeholder="Enter your Achievements" 
+         class="box" 
+         th:value="${profile.achievements}">
+
+      <input type="submit" value="Update Profile" name="submit" class="btn">
+   </form>
+</section>
+
+<footer class="footer">
+   &copy; copyright @ 2024 by | all rights reserved!
+</footer>
+
+<!-- custom js file link -->
+<script src="/script/profile.js"></script>
+<script>
+   document.querySelector('form').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(event.target);
+
+      try {
+         const response = await fetch('/api/profile/update', {
+               method: 'POST',
+               body: formData
+         });
+
+         if (response.ok) {
+               alert('Profile updated successfully!');
+               window.location.href = '/dashboard'; // Redirect to dashboard after successful update
+         } else {
+               const error = await response.text();
+               alert('Error updating profile: ' + error);
+         }
+      } catch (error) {
+         console.error('Error:', error);
+         alert('An error occurred. Please try again.');
+      }
+   });
+</script>
+</body>
+</html>
